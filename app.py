@@ -140,7 +140,7 @@ with st.sidebar:
     )
     n_replicas = st.slider(
         "Anzahl Replikate (Ketten)", *bounds("r_slider"), key="r_slider", step=C.R_STEP,
-        help="Mehr Ketten decken die Temperaturleiter feiner ab, bekommen aber weniger Budget je Kette - nicht-monotones Optimum bei R=5 (1.15 % gegen 1.58 % bei R=2 und 2.32 % bei R=10, Standardfall).",
+        help="Mehr Ketten decken die Temperaturleiter feiner ab, bekommen aber weniger Budget je Kette - nicht-monotones Optimum bei R=5 (1.15 % gegen 2.24 % bei R=2 und 2.32 % bei R=10, Standardfall).",
     )
     t_min = st.slider(
         "Kälteste Temperatur T_min", *bounds("t_min_slider"), key="t_min_slider", step=C.T_MIN_STEP, format="%.2f",
@@ -366,6 +366,6 @@ Tausch-Schleife `parallel_tempering`, die SA-Vergleichsgröße `sa_baseline` - a
 st.markdown("---")
 st.caption(
     "Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – "
-    "Operations Research und Machine Learning. Interesse an einer maßgeschneiderten Lösung für "
-    "Ihr Unternehmen? [Kontakt aufnehmen](https://sebastianhanisch.net/kontakt.html)"
+    "Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). "
+    "Mehr zur Reihe: [Trajektorien-Metaheuristiken: HC bis ALNS](https://sebastianhanisch.net/konzepte-trajektorien-metaheuristiken.html)."
 )
