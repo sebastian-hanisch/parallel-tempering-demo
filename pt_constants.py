@@ -54,8 +54,8 @@ SA_T0, SA_T_END, SA_LEVELS = 0.5, 0.1, 100
 # 200T/500T/1M/2M: PT 32.05/9.65/4.89/2.37/1.15/0.77/0.62/0.49 %; SA 9.01/4.72/3.07/1.94/1.42/1.27/0.94/0.73 %;
 # HCR 7.88/7.88/7.88/7.88/4.88/2.93/2.54/1.87 %. PT verliert bei KLEINEM Budget deutlich (das auf R=5 Ketten
 # aufgeteilte Budget lässt jeder Kette zu wenig, um überhaupt anzukommen) - der Umschlagpunkt liegt zwischen
-# 100 Tausend und 200 Tausend; AB da gewinnt PT, mit wachsendem Vorsprung (2M: 0.49 gegen 0.73 %, ein knappes
-# Drittel besser).
+# 100 Tausend und 200 Tausend; AB da gewinnt PT; der absolute Vorsprung wächst nur bis 500T (0.27/0.50/0.32/0.24
+# Punkte bei 200T/500T/1M/2M), der relative bleibt bei etwa einem Drittel (2M: 0.49 gegen 0.73 %).
 # SKALIERUNG bei festem 200-Tausend-Budget, 20/40/60/100/150/200 Stopps: PT 0.05/0.95/1.15/6.20/12.95/23.55 %;
 # SA 0.05/0.79/1.42/3.08/6.54/7.87 % - NICHT monoton: bei n=20 praktisch gleichauf, bei n=40 knapp schlechter
 # als SA, bei n=60 wieder vorn - erst AB n=100 wird der Rückstand groß und durchgehend (dieselbe
@@ -83,9 +83,9 @@ PRESETS = {
 PRESET_HELP = {
     "Standardfall (Voreinstellung)": "60 Stopps, R=5 Replikate, Leiter 0.1-0.3, Tausch alle 300 Vorschläge, 200 Tausend Vorschläge: die beste Tour liegt im Mittel 1.15 % über der Schranke - kalibriertes Simulated Annealing bei gleichem Budget 1.42 %, Hill Climbing mit Neustarts 4.88 %.",
     "Ohne Tausch (Kontrolle)": "Dieselben 5 Ketten, aber OHNE Austausch (jede läuft isoliert bei ihrer eigenen Temperatur): 2.40 % statt 1.15 % - der Austausch selbst bringt den Vorteil, nicht nur \"mehrere Temperaturen zu haben\".",
-    "Weite Leiter (deckt SA-Extreme ab)": "Leiter von 0.02 bis 0.5 - deckt genau die Temperaturen ab, bei denen Simulated Annealing in der Schwester-Demo katastrophal scheitert (zu kalt: 8.66 %, zu heiß: 14.96 % beste / 31.57 % letzte Tour): Parallel Tempering kommt mit 3.22 % deutlich besser weg als SA an JEDEM dieser Extreme - aber auch klar schlechter als die kalibrierte, engere Leiter (1.15 %). Robuster als SA, aber nicht tuningfrei.",
+    "Weite Leiter (deckt SA-Extreme ab)": "Leiter von 0.02 bis 0.5 - deckt genau die Temperaturen ab, bei denen Simulated Annealing katastrophal scheitert (in der SA-Vergleichsrechnung dieser Demo auf den fünf Sweep-Instanzen, T0=0.05/T_end=0.02 bzw. T0=1/T_end=0.5: zu kalt 8.66 %, zu heiß 14.96 % beste / 31.57 % letzte Tour; die SA-Demo nennt auf ihrer eigenen Instanz andere Zahlen): Parallel Tempering kommt mit 3.22 % deutlich besser weg als SA an JEDEM dieser Extreme - aber auch klar schlechter als die kalibrierte, engere Leiter (1.15 %). Robuster als SA, aber nicht tuningfrei.",
     "Kleines Budget (10 Tausend)": "Nur 10 Tausend Vorschläge, auf 5 Ketten verteilt (2 Tausend je Kette): 32.05 % über der Schranke - jede Kette kommt kaum vom Fleck. Kalibriertes SA (ein Lauf, kein Split) liegt bei 9.01 %.",
-    "Großes Budget (1 Million)": "1 Million Vorschläge: 0.62 % über der Schranke gegen 0.94 % für kalibriertes SA - der Vorsprung von Parallel Tempering WÄCHST mit dem Budget, statt zu schrumpfen wie bei den meisten anderen Stücken dieser Linie.",
+    "Großes Budget (1 Million)": "1 Million Vorschläge: 0.62 % über der Schranke gegen 0.94 % für kalibriertes SA - Parallel Tempering liegt weiter vorn (0.32 Punkte, rund ein Drittel von SAs Abstand); der absolute Vorsprung war bei 500 Tausend mit 0.50 Punkten am größten und schrumpft danach leicht.",
     "Große Instanz (200 Stopps)": "200 Stopps, 200 Tausend Vorschläge: Parallel Tempering liegt bei 23.55 % gegen 7.87 % für kalibriertes SA - derselbe Budget-Teilungs-Effekt wie beim kleinen Budget, hier durch die Instanzgröße statt das Budget ausgelöst. Ehrlicher Negativbefund.",
 }
 # Urteile, die bei diesem Preset über verschiedene Instanzen und Ketten-Seeds vorkommen (jedes Preset wird über mehrere Instanzen x 2 Ketten gemessen)

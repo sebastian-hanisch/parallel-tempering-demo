@@ -3,7 +3,7 @@
 - NIE über ein Ad-hoc-Skript mit abweichender Zufalls-Bindung (die Lehre aus der lin-kernighan-demo dieser Linie:
 dort erzeugte ein Ad-hoc-Skript mit unabhängig gezogenen rng-Instanzen statt des echten paarigen start+seed-
 Musters einen überzeugend falschen Befund). Positive UND negative Aussagen: Parallel Tempering gewinnt ab
-150-200 Tausend Budget klar UND mit wachsendem Vorsprung (positiv) - aber verliert bei kleinem Budget oder großen
+150-200 Tausend Budget klar UND mit bleibendem Vorsprung (positiv) - aber verliert bei kleinem Budget oder großen
 Instanzen deutlich, weil das Budget auf R Ketten aufgeteilt wird (negativ, ehrlicher Kernbefund)."""
 
 from functools import lru_cache
@@ -27,7 +27,7 @@ def near(value, expected, tol):
     assert abs(value - expected) <= tol, f"{value:.3f} statt {expected}"
 
 
-# --- Budget-Sweep: PT verliert klein, gewinnt gross, mit WACHSENDEM statt schrumpfendem Vorsprung ------------------------------------------------
+# --- Budget-Sweep: PT verliert klein, gewinnt gross, mit bleibendem Vorsprung (absolut nur bis 500T wachsend, relativ etwa ein Drittel) ------------------------------------------------
 
 
 @pytest.mark.parametrize("budget,pt,sa,tol", [
@@ -49,14 +49,17 @@ def test_pt_loses_at_small_budget_and_wins_from_two_hundred_thousand_on():
         assert row["gap"] < row["sa"] - 0.05                                # PT gewinnt ab dem Standardbudget
 
 
-def test_pt_advantage_over_sa_grows_with_budget_past_two_hundred_thousand():
-    """Ehrlicher Kontrast zu den meisten anderen Stücken dieser Linie: der Vorsprung WÄCHST hier mit dem Budget,
-    statt zu schrumpfen (GRASP, Lin-Kernighan, Dynasearch zeigen das Gegenteil oder einen stabilen Vorsprung)."""
-    mid = cfg(budget=200000)
-    large = cfg(budget=2000000)
-    mid_edge = mid["sa"] - mid["gap"]
-    large_edge = large["sa"] - large["gap"]
-    assert mid_edge > 0 and large_edge > mid_edge - 0.05
+def test_pt_advantage_over_sa_persists_at_large_budget_and_is_biggest_in_absolute_terms_at_five_hundred_thousand():
+    """Der Vorsprung bleibt bis 2 Millionen bestehen: absolut am größten bei 500 Tausend (0.27/0.50/0.32/0.24 Punkte bei
+    200T/500T/1M/2M), relativ zu SAs Abstand etwa ein Drittel (19/39/34/33 %). 'Wächst mit dem Budget' gilt nur bis 500 Tausend."""
+    edges, rel = {}, {}
+    for budget in (200000, 500000, 1000000, 2000000):
+        row = cfg(budget=budget)
+        edges[budget] = row["sa"] - row["gap"]
+        rel[budget] = edges[budget] / row["sa"]
+    assert all(e > 0 for e in edges.values())
+    assert edges[500000] > edges[200000] and edges[500000] > edges[2000000]            # absolut: Maximum bei 500T, danach schrumpfend
+    assert all(0.15 < r < 0.45 for r in rel.values()) and rel[2000000] > rel[200000]    # relativ: etwa ein Drittel
 
 
 # --- Skalierung: PT gewinnt bis 60 Stopps, verliert danach deutlich (derselbe Budget-Teilungs-Effekt) --------------------------------------------

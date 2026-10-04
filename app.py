@@ -160,7 +160,7 @@ with st.sidebar:
     )
     budget = st.select_slider(
         "Budget (bewertete Nachbarn)", options=list(C.BUDGETS), key="budget_select", format_func=_fmt_int,
-        help="Das Budget wird auf alle R Ketten aufgeteilt - bei kleinem Budget bekommt jede Kette zu wenig (10 Tausend: 32.05 % gegen 9.01 % für SA); ab etwa 150-200 Tausend gewinnt Parallel Tempering, mit wachsendem Vorsprung (2 Millionen: 0.49 % gegen 0.73 %).",
+        help="Das Budget wird auf alle R Ketten aufgeteilt - bei kleinem Budget bekommt jede Kette zu wenig (10 Tausend: 32.05 % gegen 9.01 % für SA); ab etwa 150-200 Tausend gewinnt Parallel Tempering und bleibt vorn (2 Millionen: 0.49 % gegen 0.73 %).",
     )
     seed = st.number_input("Zufalls-Seed der Instanz", *bounds("seed_input"), key="seed_input", step=1)
     st.button("🎲 Neue Instanz generieren", width="stretch", on_click=randomize_seed, help="Würfelt einen neuen Seed für die Lage der Stopps.")
@@ -281,7 +281,7 @@ if st.session_state.get("budget_on"):
     st.plotly_chart(build_budget(rows_b), width="stretch", key="budget_chart")
     st.table({"Budget": [_fmt_int(r["value"]) for r in rows_b], "Parallel Tempering (%)": [f"{r['gap']:.2f}" for r in rows_b], "Simulated Annealing (%)": [f"{r['sa']:.2f}" for r in rows_b]})
     st.caption("Mittel über 5 feste Instanzen × 3 Ketten (60 Stopps, kalibrierte Leiter). Bei kleinem Budget verliert Parallel Tempering deutlich (jede der R Ketten bekommt zu wenig) - "
-               "ab etwa 150-200 Tausend dreht sich das Bild, und der Vorsprung WÄCHST mit dem Budget (2 Millionen: 0.49 % gegen 0.73 %), statt wie bei den meisten anderen Stücken dieser Linie zu schrumpfen.")
+               "ab etwa 150-200 Tausend dreht sich das Bild, und Parallel Tempering bleibt bis 2 Millionen vorn (0.49 % gegen 0.73 %). Der absolute Vorsprung wächst nur bis 500 Tausend (0.27 / 0.50 Punkte bei 200 / 500 Tausend) und schrumpft danach wieder (0.32 / 0.24 bei 1 / 2 Millionen); relativ zu SAs Abstand bleibt er bei etwa einem Drittel.")
 
 st.markdown("---")
 
